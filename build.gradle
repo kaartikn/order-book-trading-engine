@@ -8,7 +8,7 @@ group = 'com.kaartik'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
+    sourceCompatibility = '17'
 }
 
 repositories {
@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // Can add DB code.
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {

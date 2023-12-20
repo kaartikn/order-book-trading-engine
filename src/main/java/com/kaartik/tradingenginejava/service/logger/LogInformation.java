@@ -11,8 +11,12 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @ToString
-public record LogInformation(LogLevel logLevel, String module,
-                             String message, LocalDateTime now, long threadId,
-                             String threadName) {
+public class LogInformation {
+    private LogLevel logLevel;
+    private String module;
+    private String message;
+    private LocalDateTime now;
+    private long threadId;
+    private String threadName;
 }
 
