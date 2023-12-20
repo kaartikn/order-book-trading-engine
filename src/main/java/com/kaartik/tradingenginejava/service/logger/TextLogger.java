@@ -1,6 +1,8 @@
 package com.kaartik.tradingenginejava.service.logger;
 
-import com.kaartik.tradingenginejava.config.LoggingConfiguration;
+import jakarta.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,27 +19,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TextLogger extends AbstractLogger implements ITextLogger {
 
-    private final LoggingConfiguration loggingConfiguration;
     private final BlockingQueue<LogInformation> logQueue = new LinkedBlockingQueue<>();
     private final Thread logThread;
     private final AtomicBoolean disposed = new AtomicBoolean(false);
 
-    public TextLogger(LoggingConfiguration loggingConfiguration){
-        if (loggingConfiguration == null) {
-            throw new IllegalArgumentException("loggingConfiguration cannot be null");
-        }
-        if (loggingConfiguration.getLoggerType() != LoggerType.TEXT) {
-            throw new IllegalStateException("Wrong Logger Type");
-        }
+    @Value("${logging.text-logger.directory}")
+    private String logDirectoryProperty;
 
-        this.loggingConfiguration = loggingConfiguration;
+    @Value("${logging.text-logger.filename}")
+    private String baseFilenameProperty;
+
+    @Value("${logging.text-logger.file-extension}")
+    private String fileExtensionProperty;
+
+    public TextLogger(){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String logDirectory = Paths.get(loggingConfiguration.getTextLoggerConfiguration().getDirectory(), dateFormat.format(new Date())).toString();
+        String logDirectory = Paths.get(logDirectoryProperty, dateFormat.format(new Date())).toString();
         new File(logDirectory).mkdirs();
-        String baseLogName = String.format("%s-%s.%s", loggingConfiguration.getTextLoggerConfiguration().getFilename(),
+
+        String baseLogName = String.format("%s-%s.%s", baseFilenameProperty,
                 new SimpleDateFormat("HH_mm_ss").format(new Date()),
-                loggingConfiguration.getTextLoggerConfiguration().getFileExtension());
+                fileExtensionProperty);
+
         Path filepath = Paths.get(logDirectory, baseLogName);
 
         logThread = new Thread(() -> {
@@ -51,6 +55,7 @@ public class TextLogger extends AbstractLogger implements ITextLogger {
     }
 
 
+    @PreDestroy
     public void close() throws Exception {
         if (!disposed.getAndSet(true)) {
             logThread.interrupt();
