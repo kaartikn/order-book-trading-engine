@@ -17,6 +17,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+//@Component Get the Spring bean to work
 public class TextLogger extends AbstractLogger implements ITextLogger {
 
     private final BlockingQueue<LogInformation> logQueue = new LinkedBlockingQueue<>();
@@ -63,7 +64,7 @@ public class TextLogger extends AbstractLogger implements ITextLogger {
         }
     }
 
-    private void logAsync(String filepath) throws IOException {
+    private void  logAsync(String filepath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
             while (!Thread.currentThread().isInterrupted()) {
                 try {

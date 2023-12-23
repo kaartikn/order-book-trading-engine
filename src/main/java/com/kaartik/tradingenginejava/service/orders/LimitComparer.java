@@ -2,6 +2,7 @@ package com.kaartik.tradingenginejava.service.orders;
 
 import java.util.Comparator;
 
+// The comparer sorts Bids in descending order and Asks in ascending order.
 public class LimitComparer {
     private LimitComparer(){}
 

@@ -34,6 +34,7 @@ public class Limit {
         return Long.hashCode(price);
     }
 
+    // The size of independent orders in the orderbook.
     public int getLevelOrderCount(){
         int orderCount = 0;
         OrderBookEntry headPointer = head;
@@ -45,6 +46,7 @@ public class Limit {
         return orderCount;
     }
 
+    // Get the cumulative total order quantity.
     public int getLevelOrderQuantity(){
         int orderQuantity = 0;
         OrderBookEntry headPointer = head;
@@ -55,6 +57,7 @@ public class Limit {
         return orderQuantity;
     }
 
+    // Returns a list of all the OrderRecords at this price level. Doesn't expose the orders themselves but prepares a copy of the orders of the type OrderRecord.
     public List<OrderRecord> getLevelOrderRecords() {
         List<OrderRecord> orderRecords = new ArrayList<>();
         OrderBookEntry headPointer = head;

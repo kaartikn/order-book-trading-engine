@@ -49,6 +49,6 @@ public class ModifyOrder implements IOrderCore {
     }
 
     public Order toNewOrder() {
-        return new Order(this, this.price, this.quantity, this.isBuySide);
+        return new Order(this);
     }
 }
